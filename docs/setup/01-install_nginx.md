@@ -16,7 +16,7 @@ roles/nginx
 
 ## 获取源码包
 
-自行到 Nginx 官网下载 nginx-x.xx.x.tar.gz 的软件包放置到 roles/nginx/files/ 目录下。
+自行到 Nginx 官网下载 nginx-x.xx.x.tar.gz 的软件包放置到 `roles/nginx/files/` 目录下。
 
 ## 需要修改的地方
 
