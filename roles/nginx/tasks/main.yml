@@ -1,0 +1,30 @@
+- name: Install Nginx Depend on the package
+  yum: name={{ item }} state=present
+  loop:
+  - openssl
+  - openssl-devel
+  - pcre
+  - pcre-devel
+  - gcc
+  - gcc-c++
+  - automake
+  - zlib
+  - zlib-devel
+
+- name: Install Nginx package
+  copy: src=nginx-{{ version }}.tar.gz dest=/usr/local/src/
+
+- name: Install Nginx
+  shell: cd /usr/local/src/ && tar xf nginx-{{ version }}.tar.gz && cd nginx-{{ version }} && ./configure --prefix=/usr/local/nginx --conf-path=/etc/nginx/nginx.conf --user=nginx --group=nginx --error-log-path=/var/log/nginx/error_log --http-log-path=/var/log/nginx/access_log --pid-path=/var/run/nginx/nginx.pid --lock-path=/var/lock/nginx.lock --with-http_ssl_module --with-http_gzip_static_module --with-debug --with-http_stub_status_module && make && make install
+
+- name: Install Nginx env
+  copy: src=nginx.sh dest=/etc/profile.d/
+
+- name: Install Nginx config
+  template: src=nginx.conf.c7.j2 dest=/etc/nginx/nginx.conf
+  tags: instconf
+  notify: restart nginx
+
+- name: Start Nginx
+  shell: /usr/local/nginx/sbin/nginx
+

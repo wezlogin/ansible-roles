@@ -1,0 +1,7 @@
+version: 3.4.10
+dataDir: /data/zookeeper
+dataLogDir: /data/logs/zookeeper
+clientPort: 2181
+leader_port: 2888
+vote_port: 3888
+zk_hosts: zookeeper 

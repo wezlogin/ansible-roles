@@ -1,0 +1,4 @@
+- hosts: php-fpm
+  remote_user: root
+  roles:
+  - php

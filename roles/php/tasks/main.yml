@@ -1,0 +1,26 @@
+- name: 创建运行PHP用户所属组
+  group: name={{ groupname }} system=yes state=present
+- name: 创建运行PHP程序用户
+  user: name={{ username }} groups={{ groupname }} system=yes state=present
+
+- name: 安装PHP
+  include: install_php.yml
+
+- name: 复制配置文件 php-fpm.conf
+  template: src=php-fpm.conf.j2 dest=/usr/local/php/etc/php-fpm.conf
+  tags: instconf
+  notify: restart php-fpm
+- name: 复制配置文件 php.ini
+  template: src=php.ini.j2 dest=/usr/local/php/lib/php.ini
+  tags: instconf
+  notify: restart php-fpm
+- name: 复制配置文件 www.conf
+  template: src=www.conf.j2 dest=/usr/local/php/etc/php-fpm.d/www.conf
+  tags: instconf
+  notify: restart php-fpm
+
+- name: 复制PHP启动脚本
+  copy: src=php-fpm dest=/etc/init.d/php-fpm mode=0755
+
+- name: 启动php-fpm
+  service: name=php-fpm state=started enabled=yes runlevel=3

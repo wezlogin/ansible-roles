@@ -1,0 +1,5 @@
+- hosts: tomcatservers
+  remote_user: root
+  roles:
+  - jdk
+  - tomcat 

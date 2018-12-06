@@ -1,0 +1,28 @@
+- name: Install Depend Package
+  yum: name={{ item }} state=present
+  loop:
+  - gcc 
+  - gcc-c++ 
+  - openssl 
+  - openssl-devel 
+  - libxml2 
+  - libxml2-devel 
+  - curl-devel 
+  - libjpeg-devel 
+  - bzip2-devel.x86_64 
+  - libXpm-devel 
+  - gmp-devel 
+  - icu 
+  - libicu 
+  - libicu-devel 
+  - php-mcrypt  
+  - libmcrypt  
+  - libmcrypt-devel 
+  - postgresql-devel 
+  - libxslt-devel
+
+- name: 复制PHP安装程序
+  copy: src=php-{{ version }}.tar.gz dest=/usr/local/src/
+
+- name: Install PHP
+  shell: cd /usr/local/src/ && tar xf php-{{ version }}.tar.gz && cd php-{{ version }} && ./configure --prefix=/usr/local/php --with-pdo-pgsql --with-zlib-dir --with-freetype-dir --enable-mbstring --with-libxml-dir=/usr --enable-soap --enable-calendar --with-curl --with-mcrypt --with-gd --with-pgsql --disable-rpath --enable-inline-optimization --with-bz2 --with-zlib --enable-sockets --enable-sysvsem --enable-sysvshm --enable-pcntl --enable-mbregex --enable-exif --enable-bcmath --with-mhash --enable-zip --with-pcre-regex --with-pdo-mysql --with-mysqli --with-jpeg-dir=/usr --with-png-dir=/usr --enable-gd-native-ttf --with-openssl --with-fpm-user=www-data --with-fpm-group=www-data --with-libdir=/lib/x86_64-linux-gnu/ --enable-ftp --with-gettext --with-xmlrpc --with-xsl --enable-opcache --enable-fpm --with-iconv --with-xpm-dir=/usr && make -j 3 && make install 

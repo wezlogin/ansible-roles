@@ -1,0 +1,52 @@
+- name: 复制 zk 安装包
+  copy: src=zookeeper-{{ version }}.tar.gz dest=/usr/local/src/
+  tags: instzk
+
+- name: 检查 zk 是否安装
+  stat: path=/usr/local/zookeeper
+  register: zk_result
+  tags: instzk
+
+- name: 安装 zk
+  shell: tar xf /usr/local/src/zookeeper-{{ version }}.tar.gz -C /usr/local/ && ln -sv /usr/local/zookeeper-{{ version }} /usr/local/zookeeper
+  when: zk_result.stat.exists == false
+  tags: instzk
+
+- name: 复制 zk 配置文件
+  template: src=zoo.cfg.j2 dest=/usr/local/zookeeper-{{ version }}/conf/zoo.cfg
+  tags: 
+  - instzk
+  - instconf
+  notify:
+  - stop zk
+  - start zk
+  
+- name: 配置 zk 环境变量
+  template: src=zookeeper.sh dest=/etc/profile.d/zookeeper.sh
+  tags: instzk
+
+- name: 检查 ZOOKEEPER_HOME 是否存在
+  shell: cat /root/.bashrc
+  register: bashrc_result
+  tags: instzk
+
+- name: 引用环境变量
+  shell: source /etc/profile && echo "export ZOOKEEPER_HOME=/usr/local/zookeeper" >> /root/.bashrc && source /root/.bashrc
+  when: bashrc_result.stdout.find('ZOOKEEPER_HOME') == -1
+  tags: instzk
+
+- name: 创建 data 目录
+  file: path={{ dataDir }} state=directory
+  tags: instzk
+
+- name: 创建 logs 目录
+  file: path={{ dataLogDir }} state=directory
+  tags: instzk
+
+- name: 创建 myid 文件
+  template: src=myid.j2 dest={{ dataDir }}/myid 
+  tags: instzk
+
+- name: 运行 zk 服务
+  shell: source /root/.bashrc && nohup /usr/local/zookeeper/bin/zkServer.sh start &
+  tags: instzk

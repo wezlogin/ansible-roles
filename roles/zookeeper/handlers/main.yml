@@ -1,0 +1,4 @@
+- name: stop zk
+  shell: source /root/.bashrc && nohup /usr/local/zookeeper/bin/zkServer.sh stop & 
+- name: start zk
+  shell: source /root/.bashrc && nohup /usr/local/zookeeper/bin/zkServer.sh start & 
