@@ -51,7 +51,7 @@ sed -i '/^{% raw %}/s/$/{% endraw %}\n/g' www.conf.j2
 ## 验证
 
 ```bash
-$ ansible-playbook 04.zookeeper.yml
+$ ansible-playbook 05.php.yml
 ```
 
 执行成功后检查 php-fpm 是否运行，9000 端口是否监听：
