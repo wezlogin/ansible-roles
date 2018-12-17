@@ -25,16 +25,9 @@ $ mv roles /etc/ansible/
 |[05-安装 php-fpm](https://github.com/wezlogin/ansible-roles/blob/master/docs/setup/05-install_php.md)|||
 
 
-
-
-
-
-
 ## 关于我
-* 王恩志/男/1990
-* 工作年限：4年
+
 * 技术博客：https://codegreen.cn
-* GitHub：https://github.com/wangenzhi
 * QQ & 微信：510749025
 * 目前状态：Linux 运维工程师、K8S运维，目前在帝都任职在一家不知名互联网公司。
 
