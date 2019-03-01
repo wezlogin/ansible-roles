@@ -27,7 +27,7 @@ $ mv roles /etc/ansible/
 
 ## 关于我
 
-* 技术博客：https://codegreen.cn
+* 技术博客：https://www.opsbj.com
 * QQ & 微信：510749025
 * 目前状态：Linux 运维工程师、K8S运维，目前在帝都任职在一家不知名互联网公司。
 
