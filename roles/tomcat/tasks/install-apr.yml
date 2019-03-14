@@ -1,0 +1,21 @@
+- name: 复制 apr
+  copy: src=apr-{{ aprversion }}.tar.gz dest=/usr/local/src/
+
+- name: 检查 apr 是否安装
+  stat: path=/usr/local/apr
+  register: apr_result
+
+- name: 安装 apr
+  shell: cd /usr/local/src/ && tar xf apr-{{ aprversion }}.tar.gz && cd apr-{{ aprversion }} && ./configure --prefix=/usr/local/apr && make && make install
+  when: apr_result.stat.exists == false
+
+- name: 复制 apr-util
+  copy: src=apr-util-{{ aprutilversion }}.tar.gz dest=/usr/local/src/
+
+- name: 检查 apr 是否安装
+  stat: path=/usr/local/apr-util
+  register: aprutil_result
+
+- name: 安装 apr-util
+  shell: cd /usr/local/src/ && tar xf apr-util-{{ aprutilversion }}.tar.gz && cd apr-util-{{ aprutilversion }} && ./configure --prefix=/usr/local/apr-util --with-apr=/usr/local/apr/ && make && make install
+  when: aprutil_result.stat.exists == false

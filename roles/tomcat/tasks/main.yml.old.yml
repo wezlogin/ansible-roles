@@ -1,0 +1,42 @@
+- name: 增加熵池随机数
+  yum: name=rng-tools state=present
+
+- name: 启动 rng
+  systemd: name=rngd state=started enabled=true
+
+- name: 复制 Tomcat 程序包
+  copy: src=apache-tomcat-{{ version }}.tar.gz dest=/usr/local/src/
+
+- name: 检查 Tomcat 是否安装
+  stat: path=/usr/local/tomcat
+  register: tomcat_result
+  tags: insttomcat
+
+- name: 解压程序包
+  shell: tar xf /usr/local/src/apache-tomcat-{{ version }}.tar.gz -C /usr/local/ && ln -sv /usr/local/apache-tomcat-{{ version }} /usr/local/tomcat
+  when: tomcat_result.stat.exists == false
+  tags: insttomcat
+
+- name: 复制 Tomcat catalina.sh 配置文件
+  template: src=catalina.sh.j2 dest=/usr/local/tomcat/bin/catalina.sh mode=0750
+  tags: 
+  - instconf1
+  - insttomcat
+  notify: 
+  - stop tomcat
+  - start tomcat
+
+- name: 复制 Tomcat server.xml 配置文件
+  template: src=server.xml.j2 dest=/usr/local/tomcat/conf/server.xml
+  tags: 
+  - instconf2
+  - insttomcat
+  notify: 
+  - stop tomcat
+  - start tomcat
+
+- name: 启动 Tomcat
+  shell: source /root/.bashrc && nohup /usr/local/tomcat/bin/catalina.sh start &
+  tags:
+  - insttomcat
+

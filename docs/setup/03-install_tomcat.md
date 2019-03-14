@@ -25,6 +25,10 @@ roles/tomcat
 # Tomcat 版本
 version: 8.5.35 # 对应 files 目录下的 tomcat 软件包版本
 
+# apr 版本
+aprversion: 1.6.5 # 对应 files 目录下的 apr 软件包版本
+aprutilversion: 1.6.1 # 对应 files 目录下的 apr-util 软件包版本
+
 # Tomcat 端口号定义
 shutdown_port: 8005
 listen_port: 8080

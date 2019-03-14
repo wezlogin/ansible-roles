@@ -1,5 +1,8 @@
 # Tomcat 版本
 version: 8.5.35
+# apr 版本
+aprversion: 1.6.5
+aprutilversion: 1.6.1
 
 # Tomcat 端口号定义
 shutdown_port: 8005
