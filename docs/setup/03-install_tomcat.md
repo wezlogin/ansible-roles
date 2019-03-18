@@ -16,7 +16,9 @@ roles/tomcat
 
 ## 获取源码包
 
-自行到 [Tomcat 官网下载](https://tomcat.apache.org/)   下载后将软件包放置到 roles/tomcat/files/ 目录下。
+1、下载 Tomcat 程序包 [Tomcat 官网下载](https://tomcat.apache.org/)   下载后将软件包放置到 roles/tomcat/files/ 目录下。
+
+2、下载 apr 和 apr-util 程序包 [APR 官网下载](https://apr.apache.org/download.cgi) 下载后将软件包放置到 roles/tomcat/files/ 目录下。
 
 ## 需要修改的地方
 
