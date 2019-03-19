@@ -11,7 +11,7 @@
 ### 获取项目代码
 
 ```bash
-$ git clone https://github.com/wangenzhi/ansible.git
+$ git clone https://github.com/wezlogin/ansible-roles.git
 $ cd ansible/
 $ mv roles /etc/ansible/
 ```
