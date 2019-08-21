@@ -1,12 +1,15 @@
+---
+## 本 Tasks 用来安装 JDK
+
 - name: 复制安装包
-  copy: src={{ version }} dest=/usr/local/src/
+  copy: src={{ package }} dest=/usr/local/src/
 
 - name: 检查 JDK 是否已经安装
   stat: path=/usr/local/jdk
   register: jdk_result
 
 - name: 安装JDK
-  shell: cd /usr/local/src/ && tar xf {{ version }} -C /usr/local/ && ln -sv /usr/local/{{ link }} /usr/local/jdk
+  shell: cd /usr/local/src/ && tar xf {{ package }} -C /usr/local/ && ln -sv /usr/local/{{ link }} /usr/local/jdk
   when: jdk_result.stat.exists == false
 
 - name: 复制JDK环境变量
