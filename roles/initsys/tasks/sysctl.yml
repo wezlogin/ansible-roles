@@ -1,0 +1,19 @@
+---
+## 本Tasks用来初始化Centos7系统
+
+- name: 配置内核调优sysctl.conf
+  template: src=sysctl.conf.j2 dest=/etc/sysctl.conf backup=yes
+  notify: reload sysctl.conf
+
+- name: 设置系统文件打开数及用户进程数
+  shell: source /root/.bashrc  && ulimit -SHn 102400 && ulimit -SHu 65535
+
+- name: 设置开机生效ulimit值
+  lineinfile:
+    dest: /etc/rc.local
+    regexp: 'ulimit -SHn 102400'
+    backrefs: no
+    line: 'ulimit -SHn 102400'
+
+- name: 修改limits配置
+  template: src=20-nproc.conf.j2 dest=/etc/security/limits.d/20-nproc.conf backup=yes

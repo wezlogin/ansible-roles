@@ -1,0 +1,25 @@
+---
+## 本Tasks用来初始化Centos7系统
+
+- name: 关闭selinux
+  lineinfile:
+    dest: /etc/selinux/config
+    regexp: '^SELINUX='
+    line:   'SELINUX=disabled'
+
+- name: 禁止开机启动selinux
+  selinux: state=disabled
+  ignore_errors: yes
+
+- name: 禁止开机启动selinux
+  shell: setenforce 0
+  ignore_errors: yes
+
+- name: 关闭并禁止开机启动firewalld
+  systemd: name=firewalld state=stopped enabled=no
+  ignore_errors: yes
+
+- name: 清空 iptables 规则
+  shell: iptables -F
+
+

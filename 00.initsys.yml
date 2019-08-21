@@ -1,0 +1,4 @@
+- hosts: initsys 
+  remote_user: root
+  roles:
+  - initsys

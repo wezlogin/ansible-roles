@@ -1,0 +1,4 @@
+---
+## 本Tasks用来修改hostname
+
+- hostname: name={{ ansible_default_ipv4.address }}

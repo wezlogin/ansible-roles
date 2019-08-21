@@ -22,7 +22,7 @@ $ mv roles /etc/ansible/
 
 | [安装Nginx](https://github.com/wezlogin/ansible-roles/blob/master/docs/setup/01-install_nginx.md)  | [安装JDK](https://github.com/wezlogin/ansible-roles/blob/master/docs/setup/02-install_jdk.md) | [安装Tomcat](https://github.com/wezlogin/ansible-roles/blob/master/docs/setup/03-install_tomcat.md) | [安装Zookeeper 集群](https://github.com/wezlogin/ansible-roles/blob/master/docs/setup/04-install_zookeeper.md)|
 | --- | --- | --- | --- |
-|[安装php-fpm](https://github.com/wezlogin/ansible-roles/blob/master/docs/setup/05-install_php.md)|[安装zabbix-server](https://github.com/wezlogin/ansible-roles/blob/master/docs/setup/06-install_zabbix-server.md)|[安装zabbix-agent](https://github.com/wezlogin/ansible-roles/blob/master/docs/setup/07-install_zabbix-agent.md)|
+|[安装php-fpm](https://github.com/wezlogin/ansible-roles/blob/master/docs/setup/05-install_php.md)|[安装zabbix-server](https://github.com/wezlogin/ansible-roles/blob/master/docs/setup/06-install_zabbix-server.md)|[安装zabbix-agent](https://github.com/wezlogin/ansible-roles/blob/master/docs/setup/07-install_zabbix-agent.md)|[系统初始化]()
 
 
 ## 关于我

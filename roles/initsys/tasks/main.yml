@@ -1,0 +1,7 @@
+---
+## 本Tasks用来初始化Centos7系统
+
+- include: base.yml
+- include: hostname.yml
+- include: security.yml
+- include: sysctl.yml

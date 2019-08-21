@@ -1,0 +1,6 @@
+---
+##
+
+- name: reload sysctl.conf
+  shell: sysctl -p
+  ignore_errors: yes  %
