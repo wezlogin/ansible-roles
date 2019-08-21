@@ -1,0 +1,4 @@
+---
+# 本 Task 用来安装 zabbix_agent
+
+- include: zabbix_setup.yml

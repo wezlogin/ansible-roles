@@ -1,3 +1,5 @@
 ---
 - name: restart zabbix-server
   systemd: enabled=yes name=zabbix-server state=restarted
+- name: restart zabbix-agent 
+  systemd: enabled=yes name=zabbix-agent state=restarted

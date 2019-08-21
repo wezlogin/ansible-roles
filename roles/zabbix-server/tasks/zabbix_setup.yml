@@ -20,10 +20,21 @@
   shell: cd /usr/local/src/zabbix-server-rpm/ && rpm -ivh *.rpm --force
   when: zabbix_install_result.stat.exists == false
 
+- name: 发送楷体字符集到目标主机
+  copy: src=simkai.ttf dest=/usr/share/zabbix/assets/fonts/ owner=root group=root mode=0755
+
+- name: 替换defines.inc.php文件中字体的配置
+  copy: src=defines.inc.php dest=/usr/share/zabbix/include/defines.inc.php owner=root group=root mode=0755
+
 - name: 发送server配置模板到目标主机
   template: src=zabbix_server.conf.j2 dest=/etc/zabbix/zabbix_server.conf
   tags: instconf
   notify: restart zabbix-server
+
+- name: 发送agent配置模板到目标主机
+  template: src=zabbix_agentd.conf.j2 dest=/etc/zabbix/zabbix_agentd.conf
+  tags: instconf
+  notify: restart zabbix-agent
 
 - name: 发送zabbix.conf 配置到目标主机
   template: src=zabbix.conf.j2 dest=/etc/httpd/conf.d/zabbix.conf

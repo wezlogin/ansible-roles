@@ -1,0 +1,21 @@
+---
+# 本 Tasks 用来安装 zabbix-agent
+
+- name: 发送zabbix-agent程序包到目标主机
+  copy: src=zabbix-agent-4.2.5-1.el7.x86_64.rpm dest=/usr/local/src/  owner=root group=root mode=0755
+
+- name: 检查zabbix-agent是否已经安装
+  stat: path=/tmp/zabbix
+  register: zabbix_install_result
+
+- name: 安装程序包
+  shell: cd /usr/local/src/ && rpm -ivh zabbix-agent-4.2.5-1.el7.x86_64.rpm --force && mkdir /tmp/zabbix
+  when: zabbix_install_result.stat.exists == false
+
+- name: 发送zabbix_agent 配置到目标主机
+  template: src=zabbix_agentd.conf.j2 dest=/etc/zabbix/zabbix_agentd.conf
+  tags: instconf
+  notify: restart zabbix-agent
+
+- name: start zabbix-agent
+  systemd: enabled=yes name=zabbix-agent state=started

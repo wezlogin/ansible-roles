@@ -4,5 +4,8 @@
 - name: 启动 zabbix-server
   systemd: enabled=yes name=zabbix-server state=started
 
+- name: 启动 zabbix-agent
+  systemd: enabled=yes name=zabbix-agent state=started
+
 - name: 启动 httpd 
   systemd: enabled=yes name=httpd state=started
