@@ -1,0 +1,4 @@
+- hosts: zabbix-server
+  remote_user: root
+  roles:
+  - zabbix-server

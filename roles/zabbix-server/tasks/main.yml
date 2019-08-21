@@ -1,0 +1,6 @@
+---
+# 本 Tasks 用来安装 zabbix-server
+
+- include: zabbix_setup.yml
+- include: mysql.yml
+- include: systemd.yml

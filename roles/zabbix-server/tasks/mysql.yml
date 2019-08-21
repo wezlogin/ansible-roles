@@ -1,0 +1,19 @@
+---
+# 本 Task 用来初始化 zabbix 数据库
+- name: 启动mariadb
+  systemd: enabled=yes name=mariadb state=started
+
+- name: 复制 expect 脚本
+  copy: src=expect.sh dest=/usr/local/src/ owner=root group=root mode=0755
+
+- name: 修改 MariaDB root 用户密码 
+  shell: source /root/.bashrc && /usr/local/src/expect.sh
+
+- name: 创建 zabbix 数据库
+  shell: mysql -uroot -p11111111 -e "create database zabbix character set utf8 collate utf8_bin;" 
+
+- name: 创建zabbix用户
+  shell: mysql -uroot -p11111111 -e "grant all privileges on zabbix.* to zabbix@localhost identified by 'zabbix';"
+
+- name: 导入数据
+  shell: zcat /usr/share/doc/zabbix-server-mysql*/create.sql.gz | mysql -uzabbix -pzabbix zabbix

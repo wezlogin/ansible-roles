@@ -1,0 +1,8 @@
+---
+# 本 Task 用来启动服务
+
+- name: 启动 zabbix-server
+  systemd: enabled=yes name=zabbix-server state=started
+
+- name: 启动 httpd 
+  systemd: enabled=yes name=httpd state=started

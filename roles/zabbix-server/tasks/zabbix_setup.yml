@@ -1,0 +1,31 @@
+---
+# 本 tasks 用来安装 zabbix-server
+
+- name: 复制zabbix程序包
+  copy: src=zabbix-server-rpm.tar.gz dest=/usr/local/src/ owner=root group=root mode=0755
+
+- name: 检查zabbix程序包是否已经解压
+  stat: path=/usr/local/src/zabbix-server-rpm/
+  register: zabbix_server_result
+
+- name: 解压程序包
+  unarchive: src=/usr/local/src/zabbix-server-rpm.tar.gz dest=/usr/local/src/ copy=no owner=root group=root mode=0755
+  when: zabbix_server_result.stat.exists == false
+
+- name: 检查zabbix是否已经安装
+  stat: path=/etc/zabbix
+  register: zabbix_install_result
+
+- name: 安装程序包
+  shell: cd /usr/local/src/zabbix-server-rpm/ && rpm -ivh *.rpm --force
+  when: zabbix_install_result.stat.exists == false
+
+- name: 发送server配置模板到目标主机
+  template: src=zabbix_server.conf.j2 dest=/etc/zabbix/zabbix_server.conf
+  tags: instconf
+  notify: restart zabbix-server
+
+- name: 发送zabbix.conf 配置到目标主机
+  template: src=zabbix.conf.j2 dest=/etc/httpd/conf.d/zabbix.conf
+
+
