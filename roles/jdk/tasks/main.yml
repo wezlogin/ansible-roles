@@ -12,6 +12,12 @@
   shell: cd /usr/local/src/ && tar xf {{ package }} -C /usr/local/ && ln -sv /usr/local/{{ link }} /usr/local/jdk
   when: jdk_result.stat.exists == false
 
+- name: 配置伪随机函数生成器
+  lineinfile:
+    dest: "{{ java_home }}/jre/lib/security/java.security"
+    regexp: '^securerandom.source'
+    line: 'securerandom.source=file:/dev/urandom'
+
 - name: 复制JDK环境变量
   copy: src=jdk.sh dest=/etc/profile.d/
 

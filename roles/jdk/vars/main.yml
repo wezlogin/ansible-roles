@@ -1,2 +1,3 @@
 package: jdk-8u121-linux-x64.tar.gz
 link: jdk1.8.0_121
+java_home: /usr/local/jdk
