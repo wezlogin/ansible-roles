@@ -101,7 +101,7 @@
 # -----------------------------------------------------------------------------
 
 # OS specific support.  $var _must_ be set to either true or false.
-JAVA_OPTS="{{ VA_OPTS }}"
+JAVA_OPTS="-server -Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -Duser.timezone=GMT+08 -Xms6144m -Xmx6144m -XX:NewSize=3072m -XX:MaxNewSize=4096m -XX:PermSize=512m -XX:MaxPermSize=512m -XX:MaxTenuringThreshold=10 -XX:NewRatio=2 -XX:+DisableExplicitGC"
 cygwin=false
 darwin=false
 os400=false

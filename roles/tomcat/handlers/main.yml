@@ -1,6 +1,0 @@
-- name: stop tomcat
-  shell: pkill java 
-
-- name: start tomcat
-  shell: source /root/.bashrc && nohup /usr/local/tomcat/bin/catalina.sh start &
-

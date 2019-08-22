@@ -1,54 +1,29 @@
 # 03-安装Tomcat服务
 
 ```bash
-roles/tomcat
+tomcat
+├── defaults
+│   └── main.yml
 ├── files
-├── handlers
-│   └── main.yml
+│   └── tmp.txt
 ├── tasks
+│   ├── install-tomcat.yml
 │   └── main.yml
-├── templates
-│   ├── catalina.sh.j2
-│   └── server.xml.j2
-└── vars
-    └── main.yml
+└── templates
+    ├── catalina.sh.j2
+    └── server.xml.j2
 ```
 
 ## 获取源码包
 
 1、下载 Tomcat 程序包 [Tomcat 官网下载](https://tomcat.apache.org/)   下载后将软件包放置到 roles/tomcat/files/ 目录下。
 
-2、下载 apr 和 apr-util 程序包 [APR 官网下载](https://apr.apache.org/download.cgi) 下载后将软件包放置到 roles/tomcat/files/ 目录下。
-
 ## 需要修改的地方
 
-**修改 roles/tomcat/vars/main.yml**
+**修改 roles/tomcat/defaults/main.yml**
 ```bash
 # Tomcat 版本
-version: 8.5.35 # 对应 files 目录下的 tomcat 软件包版本
-
-# apr 版本
-aprversion: 1.6.5 # 对应 files 目录下的 apr 软件包版本
-aprutilversion: 1.6.1 # 对应 files 目录下的 apr-util 软件包版本
-
-# Tomcat 端口号定义
-shutdown_port: 8005
-listen_port: 8080
-
-# server.xml 配置文件变量，这些参数可以根据自己的实际情况做调整
-connectionTimeout: 40000
-maxHttpHeaderSize: 32768
-redirectPort: 8443
-maxThreads: 1000
-minSpareThreads: 100
-maxSpareThreads: 1000
-acceptorThreadCount: 2
-acceptCount: 2000
-minProcessors: 100
-maxProcessors: 2000
-
-# catalina.sh 配置优化，这里是针对 8G 内存配置的，自行修改
-VA_OPTS: "-server -Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -Duser.timezone=GMT+08 -Xms6144m -Xmx6144m -XX:NewSize=3072m -XX:MaxNewSize=4096m -XX:PermSize=512m -XX:MaxPermSize=512m -XX:MaxTenuringThreshold=10 -XX:NewRatio=2 -XX:+DisableExplicitGC"
+TOMCAT_VER:    8.5.15
 ```
 
 server.xml 常用优化参数说明：
@@ -111,8 +86,8 @@ catalina.sh 参数说明：
 ## ansible 主机清单参考
 
 ```bash
-[tomcatservers]
-10.100.4.170
+[tomcat]
+192.168.101.101
 ```
 
 ## 验证
@@ -124,7 +99,7 @@ $ ansible-playbook 03.tomcat.yml
 检查 Tomcat 是否启动：
 
 ```bash
-$ ansible tomcatservers -m shell -a "ss -tnl|grep 8080"
+$ ansible tomcat -m shell -a "ss -tnl|grep 8080"
 
-$ ansible tomcatservers -m shell -a "ps -ef|grep java"
+$ ansible tomcat -m shell -a "ps -ef|grep java"
 ```

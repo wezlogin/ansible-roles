@@ -1,11 +1,8 @@
-- name: 增加熵池随机数
-  yum: name=rng-tools state=present
-
-- name: 启动 rng
-  systemd: name=rngd state=started enabled=true
+---
+## 本 Task 用来安装 Tomcat 
 
 - name: 复制 Tomcat 程序包
-  copy: src=apache-tomcat-{{ version }}.tar.gz dest=/usr/local/src/
+  copy: src=apache-tomcat-{{ TOMCAT_VER }}.tar.gz dest=/usr/local/src/
 
 - name: 检查 Tomcat 是否安装
   stat: path=/usr/local/tomcat
@@ -13,37 +10,21 @@
   tags: insttomcat
 
 - name: 解压程序包
-  shell: tar xf /usr/local/src/apache-tomcat-{{ version }}.tar.gz -C /usr/local/ && ln -sv /usr/local/apache-tomcat-{{ version }} /usr/local/tomcat
+  shell: tar xf /usr/local/src/apache-tomcat-{{ TOMCAT_VER }}.tar.gz -C /usr/local/ && ln -sv /usr/local/apache-tomcat-{{ TOMCAT_VER }} /usr/local/tomcat
   when: tomcat_result.stat.exists == false
   tags: insttomcat
-
-- name: 安装 tomcat-native
-  shell: cd /usr/local/tomcat/bin/ && tar xf tomcat-native.tar.gz && native_version=`find ./ -type d -name "tomcat-native-*"|awk -F "-" '{print $3}'` && cd tomcat-native-${native_version}-src/native/ && ./configure --prefix=/usr/local/apr --with-java-home=/usr/local/jdk && make && make install
-
-- name: 添加 native 动态库变量
-  copy: src=apr.sh dest=/etc/profile.d/apr.sh
-
-- name: 引用环境变量
-  shell: source /etc/profile && echo "export LD_LIBRARY_PATH=/usr/local/apr/lib" >> /root/.bashrc && source /root/.bashrc
-  when: bashrc_result.stdout.find('LD_LIBRARY_PATH') == -1
 
 - name: 复制 Tomcat catalina.sh 配置文件
   template: src=catalina.sh.j2 dest=/usr/local/tomcat/bin/catalina.sh mode=0750
   tags:
   - instconf1
   - insttomcat
-  notify:
-  - stop tomcat
-  - start tomcat
 
 - name: 复制 Tomcat server.xml 配置文件
   template: src=server.xml.j2 dest=/usr/local/tomcat/conf/server.xml
   tags:
   - instconf2
   - insttomcat
-  notify:
-  - stop tomcat
-  - start tomcat
 
 - name: 启动 Tomcat
   shell: source /root/.bashrc && nohup /usr/local/tomcat/bin/catalina.sh start &
