@@ -1,0 +1,44 @@
+---
+# 本 Task 用来安装 keepalived
+
+- name: 发送 keepalived 程序包到目标主机
+  unarchive: src=keepalived-rpm.tar.gz dest=/usr/local/src/ mode=0755
+
+- name: 检查 keepalived 是否已经安装
+  stat: path=/usr/sbin/keepalived
+  register: keepalived_result
+
+- name: 安装 keepalived
+  shell: cd /usr/local/src/keepalived-rpm && rpm -ivh *.rpm --force
+  when: keepalived_result.stat.exists == false
+
+- name: 发送 check 脚本到目标主机
+  copy: src=keep_down.sh dest=/etc/keepalived/ owner=root group=root mode=0755
+
+- name: 发送 keepalived.conf 到 Master
+  template: src=single_keepalived_master.conf.j2 dest=/etc/keepalived/keepalived.conf
+  when: role == "master" and m_ins == "false"
+  tags: instconf
+  notify: restart keepalived
+  
+- name: 发送 keepalived.conf 到 Backup
+  template: src=single_keepalived_backup.conf.j2 dest=/etc/keepalived/keepalived.conf
+  when: role == "backup" and m_ins == "false"
+  tags: instconf
+  notify: restart keepalived
+
+- name: 发送 keepalived.conf 到 Multi Instances Master
+  template: src=multi_keepalived_master.conf.j2 dest=/etc/keepalived/keepalived.conf
+  when: role == "master" and m_ins == "true"
+  tags: instconf
+  notify: restart keepalived
+
+- name: 发送 keepalived.conf 到 Multi Instances Backup
+  template: src=multi_keepalived_backup.conf.j2 dest=/etc/keepalived/keepalived.conf
+  when: role == "backup" and m_ins == "true"
+  tags: instconf
+  notify: restart keepalived
+
+- name: 启动keepalived
+  systemd: name=keepalived state=started enabled=yes
+
