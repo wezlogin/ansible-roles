@@ -40,6 +40,7 @@ INTERFACE: ens32 # VIP 配置在哪块网卡之上，这里是网卡名
 # s_m_vip={IPADDR}：定义在主从模式下的 VIP 地址；
 # m_m_vip={IPADDR}：定义在互为主备模式下当前节点的 MASTER 的 VIP；
 # m_b_vip={IPADDR}：定义在互为主备模式下当前节点的 BACKUP 的 VIP；
+# m_cast={IPADDR}：定义多播地址，当局域网内存在多个虚拟路由器时应使用不同的多播地址；
 ```
 
 ## 验证
