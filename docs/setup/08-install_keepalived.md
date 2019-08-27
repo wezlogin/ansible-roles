@@ -19,6 +19,16 @@ roles/keepalived
     └── main.yml
 ```
 
+## 部署拓扑图
+
+### 1. 部署主从模式
+
+![keepalived-s](http://img.opsbj.com/keepalived-s.png)
+
+### 2. 部署互为主备模式
+
+![keepalived-m](http://img.opsbj.com/keepalived-m.png)
+
 ## 需要修改的地方
 
 ### 1. 修改环境变量 
