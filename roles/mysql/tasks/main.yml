@@ -1,0 +1,4 @@
+---
+# 本 Task 用来安装 MySQL
+
+- include: mysql_setup.yml

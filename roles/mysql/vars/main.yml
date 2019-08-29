@@ -1,0 +1,4 @@
+DATADIR: /data/mysql
+LOGDIR: /data/mysql/logs
+BASEDIR: /usr/local/mysql
+USER: mysql

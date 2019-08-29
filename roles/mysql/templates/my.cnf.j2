@@ -1,0 +1,49 @@
+[mysqld_multi]
+mysqld = /usr/local/mysql/bin/mysqld
+mysqladmin = /usr/local/mysql/bin/mysqladmin
+log = /tmp/mysql_multi.log
+ 
+[mysqld3306]
+datadir = {{ DATADIR }}/3306
+socket = /tmp/mysql_3306.sock
+pid-file = {{ DATADIR }}/3306/mysql_3306.pid
+port = 3306
+user = mysql
+performance_schema = off
+bind_address = 0.0.0.0
+skip-name-resolve = 0
+log-bin=mysql-bin
+binlog_format=mixed
+server-id=1
+innodb_buffer_pool_size = 128M
+innodb_log_file_size = 128M
+innodb_file_per_table = 1
+innodb_flush_log_at_trx_commit = 0
+log-error = {{ LOGDIR }}/3306/mysql_error.log
+log-bin = {{ LOGDIR }}/3306/mysql_bin.log
+slow_query_log = 1
+slow_query_log_file = {{ LOGDIR }}/3306/mysql_slow_query.log
+long_query_time = 5
+
+
+[mysqld3307]
+datadir = {{ DATADIR }}/3307
+socket = /tmp/mysql_3307.sock
+pid-file = {{ DATADIR }}/3307/mysql_3307.pid
+port = 3307
+user = mysql
+performance_schema = off
+bind_address = 0.0.0.0
+skip-name-resolve = 0
+log-bin=mysql-bin
+binlog_format=mixed
+server-id=3
+innodb_buffer_pool_size = 128M
+innodb_log_file_size = 128M
+innodb_file_per_table = 1
+innodb_flush_log_at_trx_commit = 0
+log-error = {{ LOGDIR }}/3307/mysql_error.log
+log-bin = {{ LOGDIR }}/3307/mysql_bin.log
+slow_query_log = 1
+slow_query_log_file = {{ LOGDIR }}/3307/mysql_slow_query.log
+long_query_time = 5

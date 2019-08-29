@@ -1,0 +1,48 @@
+---
+# 本 Task 用来安装 MySQL
+
+- name: 创建 mysql 用户
+  user: name=mysql system=yes state=present shell=/sbin/nologin createhome=no
+
+- name: 发送依赖包到目标主机
+  copy: src=libaio-0.3.109-13.el7.x86_64.rpm dest=/usr/local/src/ mode=0755
+
+- name: 安装依赖包
+  shell: cd /usr/local/src/ && rpm -ivh *.rpm --force
+
+- name: 检查 mysql 是否已经安装
+  stat: path=/usr/local/mysql-5.7.27-linux-glibc2.12-x86_64
+  register: mysql_result
+
+- name: 发送mysql二进制包到目标主机
+  unarchive: src=mysql-5.7.27-linux-glibc2.12-x86_64.tar.gz dest=/usr/local/ mode=0755
+  when: mysql_result.stat.exists == false
+
+- name: 创建软链接
+  file: src=/usr/local/mysql-5.7.27-linux-glibc2.12-x86_64 dest=/usr/local/mysql state=link 
+
+- name: 修改属性
+  file: path=/usr/local/mysql-5.7.27-linux-glibc2.12-x86_64 owner=root group=mysql recurse=yes
+
+- name: 创建数据目录和日志目录
+  shell: mkdir -p {{ DATADIR }}/{3306,3307} && mkdir -p {{ LOGDIR }}/{3306,3307} && chown -R mysql.mysql {{ DATADIR }} && chown -R mysql.mysql {{ LOGDIR }}
+
+- name: 发送my.cnf到目标主机
+  template: src=my.cnf.j2 dest=/etc/my.cnf
+
+- name: 检查是否已经初始化
+  stat: path=/data/mysql/3306/mysql
+  register: mysql_result
+
+- name: 初始化
+  shell: /usr/local/mysql/bin/mysqld --initialize-insecure --user={{ USER }} --basedir={{ BASEDIR }} --datadir={{ DATADIR }}/3306/ && /usr/local/mysql/bin/mysqld --initialize-insecure --user={{ USER }} --basedir={{ BASEDIR }} --datadir={{ DATADIR }}/3307/ && /usr/local/mysql/bin/mysql_ssl_rsa_setup --user={{ USER }} --basedir={{ BASEDIR }} --datadir={{ DATADIR }}/3306/ && /usr/local/mysql/bin/mysql_ssl_rsa_setup --user={{ USER }} --basedir={{ BASEDIR }} --datadir={{ DATADIR }}/3307
+  when: mysql_result.stat.exists == false
+
+- name: 复制启动脚本
+  shell: cp /usr/local/mysql/support-files/mysqld_multi.server  /etc/init.d/mysqld_multi && chmod +x /etc/init.d/mysqld_multi && echo 'source /etc/profile' >> /etc/rc.d/rc.local &&  echo '/usr/local/mysql/bin/mysqld_multi start' >> /etc/rc.d/rc.local
+
+- name: 发送环境变量文件到目标主机
+  copy: src=mysql.sh dest=/etc/profile.d/ mode=0755
+
+- name: 重启服务器
+  shell: reboot 
